@@ -9,4 +9,4 @@ Please run as 'xccdf-xml2tsv.py' <filename> and redirect output as needed.
 Files should open easily in Excel.
 
 E.g.:
-	 xccdf-xml2tsv.py U_Perimeter_Router_v8R2_manual.xccdf.xml > output.tsv
+	 python xccdf-xml2tsv.py U_Perimeter_Router_v8R2_manual.xccdf.xml > output.tsv
