@@ -10,3 +10,9 @@ Files should open easily in Excel.
 
 E.g.:
 	 python xccdf-xml2tsv.py U_Perimeter_Router_v8R2_manual.xccdf.xml > output.tsv
+
+
+###License###
+(c) 2010 Adam Crosby
+The code is licensed under:
+http://creativecommons.org/licenses/by-nc-sa/3.0/
