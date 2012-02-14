@@ -34,6 +34,7 @@ for group in groups:
 	title = group.find("{%s}title" % xmlns).text
 	severity = group.find("{%s}Rule" % xmlns).get("severity")
 	version = group.find("{%s}Rule/{%s}version" % (xmlns, xmlns)).text
+	rule_title = group.find("{%s}Rule/{%s}title" % (xmlns, xmlns)).text
 	desctag = "{%s}Rule/{%s}description" % (xmlns, xmlns)
 	descriptiontext = group.find(desctag).text
 	encodedDesc = descriptiontext.replace("&gt;", ">").replace("&lt;", "<").replace("&", "&amp;")
@@ -41,4 +42,4 @@ for group in groups:
 	xml = ET.XML(innerXML)
 	iacontrols = xml.find("IAControls").text
 	
-	print "%s\t%s\t%s\t%s" % (version, title, severity, iacontrols)
+	print "%s\t%s\t%s\t%s\t%s" % (version, rule_title, title, severity, iacontrols)
