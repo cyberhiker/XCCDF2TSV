@@ -24,13 +24,14 @@ try:
 except Exception,e:
 	print "Error, unable to parse XML document.  Are you sure that's XCCDF?"
 	sys.exit(-1)
-	
+
 benchmark = xml.getroot()
 
 groups = benchmark.findall("{%s}Group" % xmlns)
 
 print "Version\tTitle\tSeverity\tIA Controls"
 for group in groups:
+	group_id = group.get("id")
 	title = group.find("{%s}title" % xmlns).text
 	severity = group.find("{%s}Rule" % xmlns).get("severity")
 	version = group.find("{%s}Rule/{%s}version" % (xmlns, xmlns)).text
@@ -41,5 +42,5 @@ for group in groups:
 	innerXML = "<desc>%s</desc>" % format(encodedDesc)
 	xml = ET.XML(innerXML)
 	iacontrols = xml.find("IAControls").text
-	
-	print "%s\t%s\t%s\t%s\t%s" % (version, rule_title, title, severity, iacontrols)
+
+	print "%s\t%s\t%s\t%s\t%s\t%s\t" % (group_id, version, rule_title, title, severity, iacontrols)
