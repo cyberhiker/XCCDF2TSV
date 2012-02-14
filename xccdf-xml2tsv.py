@@ -29,7 +29,7 @@ benchmark = xml.getroot()
 
 groups = benchmark.findall("{%s}Group" % xmlns)
 
-print "Version\tTitle\tSeverity\tIA Controls"
+print "ID\tVersion\tRule Title\tTitle\tSeverity\tIA Controls"
 for group in groups:
 	group_id = group.get("id")
 	title = group.find("{%s}title" % xmlns).text
