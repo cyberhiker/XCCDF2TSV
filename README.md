@@ -1,18 +1,11 @@
-#XCCDF to TSV#
-Converts XCCDF to TSV.
+###STIG Browser Parser###
+Instead of just pooping out a TSV, this will be used to create a dynamic web app.
+The webapp will format things, and act as a checklist for the public to use.
+Comments, tags, annotations, etc.  Social IA!
 
-##Usage##
-XCCDF-xml2tsv converts XCCDF XML documents (such as DISA STIGs) into easier to use Tab-Separated documents.
+Coming soon!
 
-Please run as 'xccdf-xml2tsv.py' <filename> and redirect output as needed.
-
-Files should open easily in Excel.
-
-E.g.:
-	 python xccdf-xml2tsv.py U_Perimeter_Router_v8R2_manual.xccdf.xml > output.tsv
-
+The code will be open-source-ish, for folks who'd like to run it on 'offline' networks.
 
 ###License###
 (c) 2010 Adam Crosby
-The code is licensed under:
-http://creativecommons.org/licenses/by-nc-sa/3.0/
