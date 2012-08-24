@@ -64,24 +64,24 @@ def getStigExcel(stigid, profile):
 	return response
 
 @app.route("/stig/<stigid>/")
+def getStigOverview(stigid):
+	s = session.query(STIG).filter_by(pkid=stigid).first()
+	profiles = {'mac1public': len(s.MAC1PublicProfile.split(',')), 
+				'mac1sensitive':len(s.MAC1SensitiveProfile.split(',')), 
+				'mac1classified':len(s.MAC1ClassifiedProfile.split(',')),
+				'mac2public':len(s.MAC2PublicProfile.split(',')),
+				'mac2sensitive':len(s.MAC2SensitiveProfile.split(',')),
+				'mac2classified':len(s.MAC2ClassifiedProfile.split(',')),
+				'mac3public':len(s.MAC3PublicProfile.split(',')), 
+				'mac3sensitive':len(s.MAC3SensitiveProfile.split(',')), 
+				'mac3classified':len(s.MAC3ClassifiedProfile.split(','))}
+	return render_template('stigoverview.html', stig=s, profiles = profiles)
+
 @app.route("/stig/<stigid>/<profile>/")
-def getStig(stigid, profile=None):
-	if profile:
-		s = session.query(STIG).filter_by(pkid=stigid).first()
-		checks = getChecksByProfile(s, profile)
-		return render_template('stigprofiledetail.html', checks=checks, stig=s, profile=profile)
-	else:
-		s = session.query(STIG).filter_by(pkid=stigid).first()
-		profiles = {'mac1public': len(s.MAC1PublicProfile.split(',')), 
-					'mac1sensitive':len(s.MAC1SensitiveProfile.split(',')), 
-					'mac1classified':len(s.MAC1ClassifiedProfile.split(',')),
-					'mac2public':len(s.MAC2PublicProfile.split(',')),
-					'mac2sensitive':len(s.MAC2SensitiveProfile.split(',')),
-					'mac2classified':len(s.MAC2ClassifiedProfile.split(',')),
-					'mac3public':len(s.MAC3PublicProfile.split(',')), 
-					'mac3sensitive':len(s.MAC3SensitiveProfile.split(',')), 
-					'mac3classified':len(s.MAC3ClassifiedProfile.split(','))}
-		return render_template('stigoverview.html', stig=s, profiles = profiles)
+def getStig(stigid, profile):
+	s = session.query(STIG).filter_by(pkid=stigid).first()
+	checks = getChecksByProfile(s, profile)
+	return render_template('stigprofiledetail.html', checks=checks, stig=s, profile=profile)
 
 @app.route("/check/<checkid>")
 def getCheck(checkid):

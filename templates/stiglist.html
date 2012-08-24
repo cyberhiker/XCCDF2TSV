@@ -62,7 +62,7 @@
       
       <ul>
       {% for stig in stigs|sort(attribute='title') %}
-            <li><a href="{{ url_for('getStig', stigid=stig.pkid) }}"> {{ stig.title }}</a></li>
+            <li><a href="{{ url_for('getStigOverview', stigid=stig.pkid) }}"> {{ stig.title }}</a></li>
       {% endfor %}
 
       <!-- Example row of columns -->

@@ -88,11 +88,11 @@
       <tbody>
         {% for check in checks|sort(attribute='severity') %}
         {% if check.severity == 'high' %}
-          <tr><td>{{ check.findingid }}</td><td class="alert-danger">{{ check.severity }}</td><td>{{ check.title }}</td><td>{{ check.description|truncate() }}</td></tr>
+          <tr><td><a href="{{ url_for('getCheck', checkid=check.findingid) }}"> {{ check.findingid }}</a></td><td class="alert-danger">{{ check.severity }}</td><td>{{ check.title }}</td><td>{{ check.description|truncate() }}</td></tr>
         {% elif check.severity == 'medium' %}
-          <tr><td>{{ check.findingid }}</td><td class="alert">{{ check.severity }}</td><td>{{ check.title }}</td><td>{{ check.description|truncate()}}</td></tr>
+          <tr><td><a href="{{ url_for('getCheck', checkid=check.findingid) }}"> {{ check.findingid }}</a></td><td class="alert">{{ check.severity }}</td><td>{{ check.title }}</td><td>{{ check.description|truncate()}}</td></tr>
         {% else %}
-          <tr><td>{{ check.findingid }}</td><td class="alert-info">{{ check.severity }}</td><td>{{ check.title }}</td><td>{{ check.description|truncate() }}</td></tr>
+          <tr><td><a href="{{ url_for('getCheck', checkid=check.findingid) }}"> {{ check.findingid }}</a></td><td class="alert-info">{{ check.severity }}</td><td>{{ check.title }}</td><td>{{ check.description|truncate() }}</td></tr>
         {% endif %}
         {% endfor %}
       </tbody>

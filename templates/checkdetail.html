@@ -53,8 +53,8 @@
     </div>
     <div class="container">
     <div class="row">
-      <div class="span6"><h2>{{ check.title }}</h2></div>
-      <div class="span2 offset4"><h4>{{check.version}} ({{ check.ruleID }})</h4></div>
+      <div class="span8"><h2>{{ check.title }}</h2></div>
+      <div class="span2 offset2"><h4>{{check.version}} <br>({{ check.ruleID }})</h4></div>
       
     </div>
   </div>
@@ -86,7 +86,7 @@
               <tr><th>Check Text ( {{ check.checktext }} )</th></tr>
             </thead>
             <tbody>
-              <tr><td> {{ check.checkid }} </td></tr>
+              <tr><td> {{ check.checkid|replace("\n", "<br>")|safe }} </td></tr>
             </tbody>
           </table>
                 <table class="table">
