@@ -52,13 +52,24 @@ def checks(severity=None):
 		checkstats = {'high': highchecks, 'medium': mediumchecks, 'low': lowchecks}
 		return render_template('checkoverview.html', checkstats=checkstats)
 
+@app.route("/stig/<stigid>/<profile>/excel")
+@app.route("/stig/<stigid>/<profile>/Excel")
+def getStigExcel(stigid, profile):
+	s = session.query(STIG).filter_by(pkid=stigid).first()
+	checks = getChecksByProfile(s, profile)
+	response = make_response(render_template('stigprofiledetail.csv', checks=checks, stig=s))
+	response.headers['Content-Disposition'] = 'attachment; filename="%s - %s.csv"' % (s.title, profile)
+	response.headers['Content-Type'] = 'text/csv; name="%s - %s.csv"' % (s.title, profile)
+	response.mimetype = 'text/comma-separated-values'
+	return response
+
 @app.route("/stig/<stigid>/")
-@app.route("/stig/<stigid>/<profile>")
+@app.route("/stig/<stigid>/<profile>/")
 def getStig(stigid, profile=None):
 	if profile:
 		s = session.query(STIG).filter_by(pkid=stigid).first()
 		checks = getChecksByProfile(s, profile)
-		return render_template('stigprofiledetail.html', checks=checks, stig=s)
+		return render_template('stigprofiledetail.html', checks=checks, stig=s, profile=profile)
 	else:
 		s = session.query(STIG).filter_by(pkid=stigid).first()
 		profiles = {'mac1public': len(s.MAC1PublicProfile.split(',')), 

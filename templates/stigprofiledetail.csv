@@ -1,0 +1,10 @@
+"Finding ID","Severity","Title","Description"
+{%- for check in checks|sort(attribute='severity') -%}
+{% if check.severity == 'high' %}
+"{{ check.findingid }}","{{ check.severity }}","{{ check.title }}","{{ check.description|replace("\n",'') }}"
+{%- elif check.severity == 'medium' %}
+"{{ check.findingid }}","{{ check.severity }}","{{ check.title }}","{{ check.description|replace("\n",'') }}"
+{%- else %}
+"{{ check.findingid }}","{{ check.severity }}","{{ check.title }}","{{ check.description|replace("\n",'') }}"
+{%- endif -%}
+{%- endfor -%}
