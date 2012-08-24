@@ -87,6 +87,6 @@ def getCheck(checkid):
 	s = session.query(Finding).filter_by(findingid = checkid).first()
 	return render_template('checkdetail.html', check=s)
 
+	app.debug = True
 if __name__ == '__main__':
-#	app.debug = True
 	app.run(host='0.0.0.0')
