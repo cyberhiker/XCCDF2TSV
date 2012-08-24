@@ -88,5 +88,5 @@ def getCheck(checkid):
 	return render_template('checkdetail.html', check=s)
 
 if __name__ == '__main__':
-	app.debug = True
-	app.run(host='0.0.0.0', port=8080)
+#	app.debug = True
+	app.run(host='0.0.0.0')
