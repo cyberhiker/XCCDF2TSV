@@ -5,6 +5,18 @@ Comments, tags, annotations, etc.  Social IA!
 
 Coming soon!
 
+* After downloading the STIG Archive ZIP File, unzip everything into a working dir:
+mkdir xmldir
+cd xmldir
+find /path/to/stig/root/directory -name "*.zip" -print0 | xargs -0 -I zipfile unzip zipfile
+
+* Run this again, because there are a few zipfiles inside those:
+find ./ -name "*.zip" -print0 | xargs -0 -I zipfile unzip zipfile
+
+* Import all the XML files into the database:
+find ./ -name ".xml" -print0 | xargs -0 -I xccdf python stig-importer.py xccdf
+
+
 The code will be open-source-ish, for folks who'd like to run it on 'offline' networks.
 
 ###License###
