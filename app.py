@@ -85,7 +85,8 @@ def getStig(stigid, profile=None):
 
 @app.route("/check/<checkid>")
 def getCheck(checkid):
-	return "You asked for %s" % checkid
+	s = session.query(Finding).filter_by(findingid = checkid).first()
+	return render_template('checkdetail.html', check=s)
 
 if __name__ == '__main__':
 	app.debug = True
