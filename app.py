@@ -53,7 +53,6 @@ def checks(severity=None):
 		return render_template('checkoverview.html', checkstats=checkstats)
 
 @app.route("/stig/<stigid>/<profile>/excel")
-@app.route("/stig/<stigid>/<profile>/Excel")
 def getStigExcel(stigid, profile):
 	s = session.query(STIG).filter_by(pkid=stigid).first()
 	checks = getChecksByProfile(s, profile)
