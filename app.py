@@ -21,27 +21,57 @@ app = Flask(__name__)
 
 def getChecksByProfile(stig, profile):
 	global session
-	checks = {}
+	checks = []
 	for check in getattr(stig, profile).split(','):
 		finding = session.query(Finding).filter_by(findingid=check).first()
-		checks[finding.findingid.strip()] = finding
+		checks.append(finding)
 	return checks
 
 @app.route("/")
 def default():
-	#display linked list of stigs
+	#display welcome page
+	return render_template('index.html')
 
+@app.route("/stigs")
+def stigs():
+	#display hyper-linked list of stigs
+	stigs = session.query(STIG).all()
+	return render_template('stiglist.html', stigs=stigs)
+
+@app.route("/checks")
+@app.route("/checks/<severity>")
+def checks(severity=None):
+	#display hyper-linked list of checks
+	if severity:
+		checks = session.query(Finding).filter_by(severity=severity).all()
+		return render_template('checkseveritydetail.html', checks=checks)
+	else:
+		highchecks = session.query(Finding).filter_by(severity='high').count()
+		mediumchecks = session.query(Finding).filter_by(severity='medium').count()
+		lowchecks = session.query(Finding).filter_by(severity='low').count()
+		checkstats = {'high': highchecks, 'medium': mediumchecks, 'low': lowchecks}
+		return render_template('checkoverview.html', checkstats=checkstats)
+
+@app.route("/stig/<stigid>/")
 @app.route("/stig/<stigid>/<profile>")
-def getStig(stigid, profile):
-	s = session.query(STIG).filter_by(pkid=stigid).first()
-	checks = getChecksByProfile(s, profile)
-	
-	content = "You asked for %s" % s.title
-	
-	for check in checks:
-		ret = "<br><hr>%s: %s" % (checks[check].findingid, checks[check].title)
-		content = content + ret
-	return content
+def getStig(stigid, profile=None):
+	if profile:
+		s = session.query(STIG).filter_by(pkid=stigid).first()
+		checks = getChecksByProfile(s, profile)
+		return render_template('stigprofiledetail.html', checks=checks, stig=s)
+	else:
+		s = session.query(STIG).filter_by(pkid=stigid).first()
+		profiles = {'mac1public': len(s.MAC1PublicProfile.split(',')), 
+					'mac1sensitive':len(s.MAC1SensitiveProfile.split(',')), 
+					'mac1classified':len(s.MAC1ClassifiedProfile.split(',')),
+					'mac2public':len(s.MAC2PublicProfile.split(',')),
+					'mac2sensitive':len(s.MAC2SensitiveProfile.split(',')),
+					'mac2classified':len(s.MAC2ClassifiedProfile.split(',')),
+					'mac3public':len(s.MAC3PublicProfile.split(',')), 
+					'mac3sensitive':len(s.MAC3SensitiveProfile.split(',')), 
+					'mac3classified':len(s.MAC3ClassifiedProfile.split(','))}
+		return render_template('stigoverview.html', stig=s, profiles = profiles)
+
 @app.route("/check/<checkid>")
 def getCheck(checkid):
 	return "You asked for %s" % checkid
