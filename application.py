@@ -16,19 +16,16 @@ def getChecksByProfile(stig, profile):
 	checks = []
 	for check in getattr(stig, profile).split(','):
 		finding = Finding.query.filter_by(findingid=check).first()
-		#finding = session.query(Finding).filter_by(findingid=check).first()
 		checks.append(finding)
 	return checks
 
 @app.route("/")
 def default():
-	#display welcome page
 	return render_template('index.html')
 
 @app.route("/stigs")
 def stigs():
 	#display hyper-linked list of stigs
-	#stigs = session.query(STIG).all()
 	stigs = STIG.query.all()
 	return render_template('stiglist.html', stigs=stigs)
 
@@ -37,15 +34,11 @@ def stigs():
 def checks(severity=None):
 	#display hyper-linked list of checks
 	if severity:
-		#checks = session.query(Finding).filter_by(severity=severity).all()
 		checks = Finding.query.filter_by(severity=severity).all()
 		return render_template('checkseveritydetail.html', checks=checks)
 	else:
-		#highchecks = session.query(Finding).filter_by(severity='high').count()
 		highchecks = Finding.query.filter_by(severity='high').count()
-		#mediumchecks = session.query(Finding).filter_by(severity='medium').count()
 		mediumchecks = Finding.query.filter_by(severity='medium').count()
-		#lowchecks = session.query(Finding).filter_by(severity='low').count()
 		lowchecks = Finding.query.filter_by(severity='low').count()
 		checkstats = {'high': highchecks, 'medium': mediumchecks, 'low': lowchecks}
 		return render_template('checkoverview.html', checkstats=checkstats)
@@ -63,7 +56,6 @@ def getStigExcel(stigid, profile):
 
 @app.route("/stig/<stigid>/")
 def getStigOverview(stigid):
-	#s = session.query(STIG).filter_by(pkid=stigid).first()
 	s = STIG.query.filter_by(pkid=stigid).first()
 	profiles = {'mac1public': len(s.MAC1PublicProfile.split(',')), 
 				'mac1sensitive':len(s.MAC1SensitiveProfile.split(',')), 
@@ -78,14 +70,12 @@ def getStigOverview(stigid):
 
 @app.route("/stig/<stigid>/<profile>/")
 def getStig(stigid, profile):
-	#s = session.query(STIG).filter_by(pkid=stigid).first()
 	s = STIG.query.filter_by(pkid=stigid).first()
 	checks = getChecksByProfile(s, profile)
 	return render_template('stigprofiledetail.html', checks=checks, stig=s, profile=profile)
 
 @app.route("/check/<checkid>")
 def getCheck(checkid):
-	#s = session.query(Finding).filter_by(findingid = checkid).first()
 	s = Finding.query.filter_by(findingid=checkid).first()
 	return render_template('checkdetail.html', check=s)
 
