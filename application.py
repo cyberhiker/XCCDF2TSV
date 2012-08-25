@@ -1,32 +1,22 @@
 #!/usr/bin/env python
 from datetime import date
 
-import sqlalchemy
 from flask import *
-
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.declarative import declarative_base
-
-from model import STIG, Finding, Base
+from flask.ext.sqlalchemy import SQLAlchemy
 
 
-engine = create_engine('sqlite:////tmp/db.dat', echo=False)
-Base.metadata.create_all(engine)
-Session = sessionmaker(bind=engine)
-session = Session()
+application = Flask(__name__)
+app = application
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/db.dat'
+db = SQLAlchemy(app)
 
-
-app = Flask(__name__)
-# assigning to 'application' for Elastic Beanstalk support
-# Cuz I'm not typing 'application' 300000 times.
-application = app
+from model import STIG, Finding
 
 def getChecksByProfile(stig, profile):
-	global session
 	checks = []
 	for check in getattr(stig, profile).split(','):
-		finding = session.query(Finding).filter_by(findingid=check).first()
+		finding = Finding.query.filter_by(findingid=check).first()
+		#finding = session.query(Finding).filter_by(findingid=check).first()
 		checks.append(finding)
 	return checks
 
@@ -38,7 +28,8 @@ def default():
 @app.route("/stigs")
 def stigs():
 	#display hyper-linked list of stigs
-	stigs = session.query(STIG).all()
+	#stigs = session.query(STIG).all()
+	stigs = STIG.query.all()
 	return render_template('stiglist.html', stigs=stigs)
 
 @app.route("/checks")
@@ -46,18 +37,23 @@ def stigs():
 def checks(severity=None):
 	#display hyper-linked list of checks
 	if severity:
-		checks = session.query(Finding).filter_by(severity=severity).all()
+		#checks = session.query(Finding).filter_by(severity=severity).all()
+		checks = Finding.query.filter_by(severity=severity).all()
 		return render_template('checkseveritydetail.html', checks=checks)
 	else:
-		highchecks = session.query(Finding).filter_by(severity='high').count()
-		mediumchecks = session.query(Finding).filter_by(severity='medium').count()
-		lowchecks = session.query(Finding).filter_by(severity='low').count()
+		#highchecks = session.query(Finding).filter_by(severity='high').count()
+		highchecks = Finding.query.filter_by(severity='high').count()
+		#mediumchecks = session.query(Finding).filter_by(severity='medium').count()
+		mediumchecks = Finding.query.filter_by(severity='medium').count()
+		#lowchecks = session.query(Finding).filter_by(severity='low').count()
+		lowchecks = Finding.query.filter_by(severity='low').count()
 		checkstats = {'high': highchecks, 'medium': mediumchecks, 'low': lowchecks}
 		return render_template('checkoverview.html', checkstats=checkstats)
 
 @app.route("/stig/<stigid>/<profile>/excel")
 def getStigExcel(stigid, profile):
-	s = session.query(STIG).filter_by(pkid=stigid).first()
+	#s = session.query(STIG).filter_by(pkid=stigid).first()
+	s = STIG.query.filter_by(pkid=stigid).first()
 	checks = getChecksByProfile(s, profile)
 	response = make_response(render_template('stigprofiledetail.csv', checks=checks, stig=s))
 	response.headers['Content-Disposition'] = 'attachment; filename="%s - %s.csv"' % (s.title, profile)
@@ -67,7 +63,8 @@ def getStigExcel(stigid, profile):
 
 @app.route("/stig/<stigid>/")
 def getStigOverview(stigid):
-	s = session.query(STIG).filter_by(pkid=stigid).first()
+	#s = session.query(STIG).filter_by(pkid=stigid).first()
+	s = STIG.query.filter_by(pkid=stigid).first()
 	profiles = {'mac1public': len(s.MAC1PublicProfile.split(',')), 
 				'mac1sensitive':len(s.MAC1SensitiveProfile.split(',')), 
 				'mac1classified':len(s.MAC1ClassifiedProfile.split(',')),
@@ -81,15 +78,18 @@ def getStigOverview(stigid):
 
 @app.route("/stig/<stigid>/<profile>/")
 def getStig(stigid, profile):
-	s = session.query(STIG).filter_by(pkid=stigid).first()
+	#s = session.query(STIG).filter_by(pkid=stigid).first()
+	s = STIG.query.filter_by(pkid=stigid).first()
 	checks = getChecksByProfile(s, profile)
 	return render_template('stigprofiledetail.html', checks=checks, stig=s, profile=profile)
 
 @app.route("/check/<checkid>")
 def getCheck(checkid):
-	s = session.query(Finding).filter_by(findingid = checkid).first()
+	#s = session.query(Finding).filter_by(findingid = checkid).first()
+	s = Finding.query.filter_by(findingid=checkid).first()
 	return render_template('checkdetail.html', check=s)
 
-	app.debug = True
+	
 if __name__ == '__main__':
+	app.debug = True
 	app.run(host='0.0.0.0')

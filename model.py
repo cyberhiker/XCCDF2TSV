@@ -1,15 +1,14 @@
 #!/usr/bin/env python
 
 from sqlalchemy import Column, Integer, String, Date, Text, Enum
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.schema import UniqueConstraint
 import uuid
 from hashlib import sha1
 
-Base = declarative_base()
+from __main__ import db
 
-class STIG(Base):
+class STIG(db.Model):
 	__tablename__ = 'stig'
 	pkid = Column(String, primary_key=True)
 	documentReference = Column(String) # URL to PDF or other non-XML document for clarity
@@ -54,7 +53,7 @@ class STIG(Base):
 
 
 	
-class Finding(Base):
+class Finding(db.Model):
 	__tablename__ = 'finding'
 	findingid = Column(String, primary_key=True)  # XCCDF Group.id ('V-8538')
 	ruleID = Column(String)	# XCCDF Rule.id ('SV-9035r3_rule')
