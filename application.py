@@ -11,13 +11,16 @@ from sqlalchemy.ext.declarative import declarative_base
 from model import STIG, Finding, Base
 
 
-engine = create_engine('sqlite:///db.dat', echo=False)
+engine = create_engine('sqlite:////tmp/db.dat', echo=False)
 Base.metadata.create_all(engine)
 Session = sessionmaker(bind=engine)
 session = Session()
 
 
 app = Flask(__name__)
+# assigning to 'application' for Elastic Beanstalk support
+# Cuz I'm not typing 'application' 300000 times.
+application = app
 
 def getChecksByProfile(stig, profile):
 	global session
