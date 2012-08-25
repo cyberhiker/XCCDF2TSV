@@ -1,12 +1,12 @@
 #!/usr/bin/env python
-
+from flask.ext.sqlalchemy import SQLAlchemy
 from sqlalchemy import Column, Integer, String, Date, Text, Enum
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.schema import UniqueConstraint
 import uuid
 from hashlib import sha1
 
-from __main__ import db
+db = SQLAlchemy()
 
 class STIG(db.Model):
 	__tablename__ = 'stig'
