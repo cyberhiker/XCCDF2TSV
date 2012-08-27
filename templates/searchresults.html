@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block pagetitle %}Search Results{% endblock pagetitle %}
+{% block headerbar %}
+              <li><a href="/">Home</a></li>
+              <li><a href="{{ url_for('stigs') }}">STIGs</a></li>
+              <li><a href="{{ url_for('checks') }}">Checks</a></li>
+{% endblock headerbar %}
+{% block body %}
+<h2>Results for your search:</h2><br>
+<h3> Search Results for STIGs </h3>
+<ol>
+{% if not results['stigs'] %}
+NONE
+{% endif %}
+{% for result in results['stigs']|sort(attribute='title') %}
+	
+		<li>
+			<h4><a href="{{ url_for('getStigOverview', stigid=result.pkid)}}">{{result.title }}</a></h4>
+				<p>
+					<a href="{{ url_for('getStigOverview', stigid=result.pkid)}}">
+						{{environ['wsgi.url_scheme']}}://
+						{{-environ['HTTP_HOST']}}
+						{{-url_for('getStigOverview', stigid=result.pkid)}}
+					</a>
+					<br>
+					<em>Description:</em>  {{result.description|truncate(250)|replace(query, "<b>"|safe + query + "</b>"|safe)}}
+				</p>
+		</li>
+{% endfor %}
+</ol>
+<h3> Search Results for Findings </h3>
+<ol>
+{% for result in results['findings']|sort(attribute='title') %}
+	
+		<li>
+			<h4><a href="{{ url_for('getCheck', checkid=result.findingid)}}"> ( {{-result.findingid}}) {{result.title}}</a></h4>
+				<p>
+					<a href="{{ url_for('getCheck', checkid=result.findingid)}}">
+						{{environ['wsgi.url_scheme']}}://
+						{{-environ['HTTP_HOST']}}
+						{{-url_for('getCheck', checkid=result.findingid)}}
+					</a>
+					<br>
+					<em>Description:</em>  {{result.description|truncate(250)|replace(query, "<b>"|safe + query + "</b>"|safe)}}
+				</p>
+		</li>
+{% endfor %}
+</ol>
+{% endblock body %}

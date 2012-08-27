@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block pagetitle %}
+{% if query %}No Search Results for {{query}}{% else %}No Query Entered{% endif %}
+{% endblock pagetitle %}
+{% block headerbar %}
+              <li><a href="/">Home</a></li>
+              <li><a href="{{ url_for('stigs') }}">STIGs</a></li>
+              <li><a href="{{ url_for('checks') }}">Checks</a></li>
+{% endblock headerbar %}
+{% block body %}
+{% if query %}
+<h2>Sorry, there were no results for your search for <em>{{ query }}</em>.</h2><br>
+{% else %}
+<h2>Please enter a query.</h2><br>
+{% endif %}
+
+{% endblock body %}

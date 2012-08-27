@@ -3,20 +3,20 @@ from datetime import date
 
 from flask import *
 from flask.ext.sqlalchemy import SQLAlchemy
-
+from search import getSearchResults
 
 application = Flask(__name__)
 app = application
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/db.dat'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.dat'
 db = SQLAlchemy(app)
 
 from model import STIG, Finding
 
 def getChecksByProfile(stig, profile):
-	checks = []
+	checks = {'low':[], 'medium':[], 'high':[]}
 	for check in getattr(stig, profile).split(','):
 		finding = Finding.query.filter_by(findingid=check).first()
-		checks.append(finding)
+		checks[finding.severity].append(finding)
 	return checks
 
 @app.route("/")
@@ -33,10 +33,14 @@ def stigs():
 @app.route("/checks/<severity>")
 def checks(severity=None):
 	#display hyper-linked list of checks
-	if severity:
+	if severity in ['high', 'medium', 'low']:
 		checks = Finding.query.filter_by(severity=severity).all()
 		return render_template('checkseveritydetail.html', checks=checks)
+	elif severity == 'all':
+		checks = Finding.query.all()
+		return render_template('checkseveritydetail.html', checks=checks)
 	else:
+
 		highchecks = Finding.query.filter_by(severity='high').count()
 		mediumchecks = Finding.query.filter_by(severity='medium').count()
 		lowchecks = Finding.query.filter_by(severity='low').count()
@@ -79,7 +83,20 @@ def getCheck(checkid):
 	s = Finding.query.filter_by(findingid=checkid).first()
 	return render_template('checkdetail.html', check=s)
 
+
+@app.route("/search")
+def search():
+	query = request.args.get('q')
 	
+	if query == "" or query == None:
+		return render_template('nosearchresults.html', query=False)
+	
+	searchResults = getSearchResults(query)
+	if searchResults == False:
+		return render_template('nosearchresults.html', query=query)
+	else:
+		return render_template('searchresults.html', results = searchResults, environ=request.environ, query=query)
+
 if __name__ == '__main__':
 	app.debug = True
 	app.run(host='0.0.0.0')

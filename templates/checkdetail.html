@@ -1,57 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>{{ check.title }}</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="DISA STIG viewer online.">
-    <meta name="author" content="Adam crosby">
-
-    <!-- Le styles -->
-    <link href="{{ url_for('static', filename="css/bootstrap.css") }}" rel="stylesheet">
-    <style type="text/css">
-      body {
-        padding-top: 60px;
-        padding-bottom: 40px;
-      }
-    </style>
-    <link href="{{ url_for('static', filename="css/bootstrap-responsive.css") }}" rel="stylesheet">
-
-    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-
-    <!-- Le fav and touch icons -->
-    <link rel="shortcut icon" href="{{ url_for('static', filename="ico/favicon.ico") }}">
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{{ url_for('static', filename="ico/apple-touch-icon-144-precomposed.png") }}">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{{ url_for('static', filename="ico/apple-touch-icon-114-precomposed.png") }}">
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{{ url_for('static', filename="ico/apple-touch-icon-72-precomposed.png") }}">
-    <link rel="apple-touch-icon-precomposed" href="{{ url_for('static', filename="ico/apple-touch-icon-57-precomposed.png") }}">
-  </head>
-
-  <body>
-
-    <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </a>
-          <a class="brand" href="#">STIGViewer</a>
-          <div class="nav-collapse">
-            <ul class="nav">
+{% extends "base.html" %}
+{% block pagetitle %}{{ check.title }}{% endblock pagetitle %}
+{% block headerbar %}
               <li><a href="{{ url_for('default') }}">Home</a></li>
-              <li class="active"><a href="{{ url_for('stigs') }}">STIGs</a></li>
-              <li><a href="{{ url_for('checks') }}">Checks</a></li>
-            </ul>
-          </div><!--/.nav-collapse -->
-        </div>
-      </div>
-    </div>
-    <div class="container">
+              <li><a href="{{ url_for('stigs') }}">STIGs</a></li>
+              <li class="active"><a href="{{ url_for('checks') }}">Checks</a></li>
+{% endblock headerbar %}
+
+{% block body %}
     <div class="row">
       <div class="span8"><h2>{{ check.title }}</h2></div>
       <div class="span2 offset2"><h4>{{check.version}} <br>({{ check.ruleID }})</h4></div>
@@ -98,21 +53,4 @@
             </tbody>
           </table>
     </div>
-      <!-- Example row of columns -->
-      
-      <hr>
-
-      <footer>
-        <p>&copy; Adam Crosby 2012</p>
-      </footer>
-
-    </div> <!-- /container -->
-
-    <!-- Le javascript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="{{ url_for("static", filename="js/jquery.min.js") }}"></script>
-    <script src="{{ url_for("static", filename="js/bootstrap.min.js") }}"></script>
-  </body>
-</html>
-
+{% endblock body %}
