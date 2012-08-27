@@ -99,6 +99,10 @@ def search():
 	else:
 		return render_template('searchresults.html', results = searchResults, environ=request.environ, query=query)
 
+@app.route("/emailsub", methods=['POST'])
+def email():
+	print request.form['email']
+	return redirect(url_for('default'))
 if __name__ == '__main__':
 	app.debug = True
 	app.run(host='0.0.0.0')

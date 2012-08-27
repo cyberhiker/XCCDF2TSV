@@ -28,90 +28,99 @@
 
 {% block body %}
     <div class="row">
-      <div class="span6"><h2>{{ stig.title }}</h2></div>
-      <div class="span2 offset4"><h3>v. {{stig.version}} ({{ stig.date }})</h3><p><a href="{{ url_for('getStigExcel', stigid=stig.pkid, profile=profile) }}">Excel</a></p></div>
-      
+      <div class="span6">
+        <h2>{{ stig.title }}</h2>
+      </div>
+      <div class="span2 offset4">
+        <h3>v. {{stig.version}} <br>({{ stig.date }})</h3>
+        <p><a href="{{ url_for('getStigExcel', stigid=stig.pkid, profile=profile) }}">Excel</a></p>
+      </div>
     </div>
-  </div>
+  
     <div class="container">
-      <!-- Main hero unit for a primary marketing message or call to action -->
-      
-        <h3 class="lead">Overview</h3>
-        <table class="table">
-          <thead>
+      <h3 class="lead">Overview</h3>
+      <table class="table">
+        <thead>
           <tr><th>Version</th><th>Date</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>{{ stig.version }}</td><td>{{ stig.date }}</td>
+        </tbody>
+      </table>
+      <table class="table">
+          <thead>
+            <tr><th>STIG Description</th></tr>
           </thead>
           <tbody>
-          <tr><td>{{ stig.version }}</td><td>{{ stig.date }}</td>
+            <tr><td> {{ stig.description }} </td></tr>
           </tbody>
-        </table>
-        <table class="table">
-            <thead>
-              <tr><th>STIG Description</th></tr>
-            </thead>
-            <tbody>
-              <tr><td> {{ stig.description }} </td></tr>
-            </tbody>
-          </table>
-        
+      </table>
+    
+      <div class="container">
+        <h3><a href="#disqus_thread">Comments on this STIG</a></h3>
+      </div>
+      
       <div class="container well">
-          <div class="row">
-            <div class="span3">
-              <h3>Mission Assurance Catagory</h3>
-
+        
+        <div class="span4">
+          <h3>Mission Assurance Catagory</h3>
           <ul class="nav nav-pills">
-      {% if 'MAC1' in profile %}
-            <li class="active"><a href="{{  getMACURL(profile, 'MAC1', stig.pkid) }}">MAC 1</a></li>
-            <li><a href="{{  getMACURL(profile, 'MAC2', stig.pkid) }}">MAC 2</a></li>
-            <li><a href="{{  getMACURL(profile, 'MAC3', stig.pkid) }}">MAC 3</a></li>
-      {% elif 'MAC2' in profile %}
-            <li><a href="{{  getMACURL(profile, 'MAC1', stig.pkid) }}">MAC 1</a></li>
-            <li class="active"><a href="{{  getMACURL(profile, 'MAC2', stig.pkid) }}">MAC 2</a></li>
-            <li><a href="{{  getMACURL(profile, 'MAC3', stig.pkid) }}">MAC 3</a></li>          
-      {% else %}
-            <li><a href="{{  getMACURL(profile, 'MAC1', stig.pkid) }}">MAC 1</a></li>
-            <li><a href="{{  getMACURL(profile, 'MAC2', stig.pkid) }}">MAC 2</a></li>
-            <li class="active"><a href="{{  getMACURL(profile, 'MAC3', stig.pkid) }}">MAC 3</a></li> 
-      {% endif %}
+            {% if 'MAC1' in profile %}
+              <li class="active"><a href="{{  getMACURL(profile, 'MAC1', stig.pkid) }}">MAC 1</a></li>
+              <li><a href="{{  getMACURL(profile, 'MAC2', stig.pkid) }}">MAC 2</a></li>
+              <li><a href="{{  getMACURL(profile, 'MAC3', stig.pkid) }}">MAC 3</a></li>
+            {% elif 'MAC2' in profile %}
+              <li><a href="{{  getMACURL(profile, 'MAC1', stig.pkid) }}">MAC 1</a></li>
+              <li class="active"><a href="{{  getMACURL(profile, 'MAC2', stig.pkid) }}">MAC 2</a></li>
+              <li><a href="{{  getMACURL(profile, 'MAC3', stig.pkid) }}">MAC 3</a></li>          
+            {% else %}
+              <li><a href="{{  getMACURL(profile, 'MAC1', stig.pkid) }}">MAC 1</a></li>
+              <li><a href="{{  getMACURL(profile, 'MAC2', stig.pkid) }}">MAC 2</a></li>
+              <li class="active"><a href="{{  getMACURL(profile, 'MAC3', stig.pkid) }}">MAC 3</a></li> 
+            {% endif %}
           </ul>
         </div>
+        
         <div class="span3 offset1 pull-right">
           <h3>System Classification</h3>
           <ul class="nav nav-pills">
-      {% if 'Public' in profile %}
-            <li class="active"><a href="{{getClassURL(profile, 'PublicProfile', stig.pkid)}}">Public</a></li>
-            <li><a href="{{getClassURL(profile, 'SensitiveProfile', stig.pkid)}}">Sensitive</a></li>
-            <li><a href="{{getClassURL(profile, 'ClassifiedProfile', stig.pkid)}}">Classified</a></li>
-      {% elif 'Sensitive' in profile %}
-            <li><a href="{{getClassURL(profile, 'PublicProfile', stig.pkid)}}">Public</a></li>
-            <li class="active"><a href="{{getClassURL(profile, 'SensitiveProfile', stig.pkid)}}">Sensitive</a></li>
-            <li><a href="{{getClassURL(profile, 'ClassifiedProfile', stig.pkid)}}">Classified</a></li>
-      {% else %}
-            <li><a href="{{getClassURL(profile, 'PublicProfile', stig.pkid)}}">Public</a></li>
-            <li><a href="{{getClassURL(profile, 'SensitiveProfile', stig.pkid)}}">Sensitive</a></li>
-            <li class="active"><a href="{{getClassURL(profile, 'ClassifiedProfile', stig.pkid)}}">Classified</a></li>   
-      {% endif %} 
+            {% if 'Public' in profile %}
+              <li class="active"><a href="{{getClassURL(profile, 'PublicProfile', stig.pkid)}}">Public</a></li>
+              <li><a href="{{getClassURL(profile, 'SensitiveProfile', stig.pkid)}}">Sensitive</a></li>
+              <li><a href="{{getClassURL(profile, 'ClassifiedProfile', stig.pkid)}}">Classified</a></li>
+            {% elif 'Sensitive' in profile %}
+              <li><a href="{{getClassURL(profile, 'PublicProfile', stig.pkid)}}">Public</a></li>
+              <li class="active"><a href="{{getClassURL(profile, 'SensitiveProfile', stig.pkid)}}">Sensitive</a></li>
+              <li><a href="{{getClassURL(profile, 'ClassifiedProfile', stig.pkid)}}">Classified</a></li>
+            {% else %}
+              <li><a href="{{getClassURL(profile, 'PublicProfile', stig.pkid)}}">Public</a></li>
+              <li><a href="{{getClassURL(profile, 'SensitiveProfile', stig.pkid)}}">Sensitive</a></li>
+              <li class="active"><a href="{{getClassURL(profile, 'ClassifiedProfile', stig.pkid)}}">Classified</a></li>   
+            {% endif %} 
           </ul>
         </div>
       </div>
 
-        <h3 class="lead">Required Checks</h3>
+      <h3 class="lead">Required Checks</h3>
       <table class="table table-striped table-condensed table-hover">
         <thead>
         <tr><th class="span2">Finding ID</th><th>Severity</th><th>Title</th><th>Description</th></tr>
-      </thead>
-      <tbody>
-        {% for _check in checks['high']|sort(attribute='findingid') %}
-           <tr><td><a href="{{ url_for('getCheck', checkid=_check.findingid) }}"> {{ _check.findingid }}</a></td><td class="alert-danger">{{ _check.severity }}</td><td>{{ _check.title }}</td><td>{{ _check.description|truncate() }}</td></tr>
-        {% endfor %}
-        {% for _check in checks['medium']|sort(attribute='findingid') %}
-           <tr><td><a href="{{ url_for('getCheck', checkid=_check.findingid) }}"> {{ _check.findingid }}</a></td><td class="alert">{{ _check.severity }}</td><td>{{ _check.title }}</td><td>{{ _check.description|truncate() }}</td></tr>
-        {% endfor %}
-        {% for _check in checks['low']|sort(attribute='findingid') %}
-           <tr><td><a href="{{ url_for('getCheck', checkid=_check.findingid) }}"> {{ _check.findingid }}</a></td><td class="alert-info">{{ _check.severity }}</td><td>{{ _check.title }}</td><td>{{ _check.description|truncate() }}</td></tr>
-        {% endfor %}
-      </tbody>
+        </thead>
+        <tbody>
+          {% for _check in checks['high']|sort(attribute='findingid') %}
+             <tr><td><a href="{{ url_for('getCheck', checkid=_check.findingid) }}"> {{ _check.findingid }}</a></td><td class="alert-danger">{{ _check.severity }}</td><td>{{ _check.title }}</td><td>{{ _check.description|truncate() }}</td></tr>
+          {% endfor %}
+          {% for _check in checks['medium']|sort(attribute='findingid') %}
+             <tr><td><a href="{{ url_for('getCheck', checkid=_check.findingid) }}"> {{ _check.findingid }}</a></td><td class="alert">{{ _check.severity }}</td><td>{{ _check.title }}</td><td>{{ _check.description|truncate() }}</td></tr>
+          {% endfor %}
+          {% for _check in checks['low']|sort(attribute='findingid') %}
+             <tr><td><a href="{{ url_for('getCheck', checkid=_check.findingid) }}"> {{ _check.findingid }}</a></td><td class="alert-info">{{ _check.severity }}</td><td>{{ _check.title }}</td><td>{{ _check.description|truncate() }}</td></tr>
+          {% endfor %}
+        </tbody>
       </table>
     </div>
+
+{% include 'disqus.html' %}
+
 
 {% endblock body %}

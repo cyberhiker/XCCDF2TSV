@@ -4915,7 +4915,7 @@ a.badge:hover {
   color: #ffffff;
 }
 
-.hero-unit {
+.hero-unit-orig {
   padding: 60px;
   margin-bottom: 30px;
   background-color: #eeeeee;
@@ -4923,7 +4923,16 @@ a.badge:hover {
      -moz-border-radius: 6px;
           border-radius: 6px;
 }
+.hero-unit{
+    padding: 60px;
+  margin-bottom: 30px;
+  -webkit-border-radius: 6px;
+     -moz-border-radius: 6px;
+          border-radius: 6px;
 
+
+
+}
 .hero-unit h1 {
   margin-bottom: 0;
   font-size: 60px;
