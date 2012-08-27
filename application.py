@@ -22,7 +22,8 @@ def getChecksByProfile(stig, profile):
 
 @app.route("/")
 def default():
-	return render_template('index.html')
+	stigs = STIG.query.order_by(STIG.date.desc()).limit(10).all()
+	return render_template('index.html', stigs=stigs)
 
 @app.route("/stigs")
 def stigs():

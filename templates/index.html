@@ -8,7 +8,37 @@
 
 {% block body %}
         <div class="hero-unit">
-        <h1>Welcome to STIG Viewer</h1>
+        	<div class="container">
+        		<h1>Welcome to STIG Viewer</h1>
+        		<p class="lead">Finally, a better way to use the STIGs!</p>
+        	</div>
+        </div>
         
+       	<div class="row">
+       	<div class="span4">
+       		<h2>News</h2>
+       		<h3>Welcome to STIG Viewer </h3>
+       		<p>STIG Viewer is currently in a Public Alpha phase.  Please look around, and feel free to make any suggestions for enhancements, bugfixes, etc.</p>
+       		<hr>
+       		<p>All of the UNCLASS DISA STIGs (no SIPRNet, no FOUO) contained in the <a href="http://iase.disa.mil/stigs/dod_purpose-tool/index.html">STIG 'zip' archive</a> as of August 2012 are included in this online, searchable, browseable index.</p>
+       		<p>When a new archive is released in October, the site will be updated to reflect that as well.</p>
+       		
+       		<p><a href="https://twitter.com/share" class="twitter-share-button">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script></p>
+       	</div>
+       	<div class="span7 pull-right" >
+	       	<h2>Latest Released STIGs</h2>
+	        <table class="table table-compressed table-striped table-border">
+	        	<thead>
+	        		<tr><th>Release Date</th><th>Title</th><th>Version</th></tr>
+	        	</thead>
+	        	<tbody>
+	        		{% for stig in stigs %}
+	        			<tr><td>{{ stig.date }}</td><td><a href="{{ url_for('getStigOverview', stigid=stig.pkid)}}">{{ stig.title }}</a></td><td>{{ stig.version }}</td></tr>
+	        		{% endfor %}
+	        	</tbody>
+	    	</table>
+		</div>
+		</div> <!-- end 'row' -->
       </div>
 {% endblock body %}
