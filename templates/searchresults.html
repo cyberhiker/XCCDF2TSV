@@ -8,10 +8,10 @@
 {% block body %}
 <h2>Results for your search:</h2><br>
 <h3> Search Results for STIGs </h3>
-<ol>
 {% if not results['stigs'] %}
 NONE
-{% endif %}
+{% else %}
+<ol>
 {% for result in results['stigs']|sort(attribute='title') %}
 	
 		<li>
@@ -28,7 +28,11 @@ NONE
 		</li>
 {% endfor %}
 </ol>
+{% endif %}
 <h3> Search Results for Findings </h3>
+{% if not results['findings'] %}
+NONE
+{% else %}
 <ol>
 {% for result in results['findings']|sort(attribute='title') %}
 	
@@ -46,4 +50,5 @@ NONE
 		</li>
 {% endfor %}
 </ol>
+{% endif %}
 {% endblock body %}

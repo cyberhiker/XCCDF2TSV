@@ -7,7 +7,8 @@ from search import getSearchResults
 
 application = Flask(__name__)
 app = application
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.dat'
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.dat'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/db.dat'
 db = SQLAlchemy(app)
 
 from model import STIG, Finding
