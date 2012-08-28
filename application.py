@@ -49,17 +49,6 @@ def checks(severity=None):
 		checkstats = {'high': highchecks, 'medium': mediumchecks, 'low': lowchecks}
 		return render_template('checkoverview.html', checkstats=checkstats)
 
-@app.route("/stig/<stigid>/<profile>/excel")
-def getStigExcel(stigid, profile):
-	#s = session.query(STIG).filter_by(pkid=stigid).first()
-	s = STIG.query.filter_by(pkid=stigid).first()
-	checks = getChecksByProfile(s, profile)
-	response = make_response(render_template('stigprofiledetail.csv', checks=checks, stig=s))
-	response.headers['Content-Disposition'] = 'attachment; filename="%s - %s.csv"' % (s.title, profile)
-	response.headers['Content-Type'] = 'text/csv; name="%s - %s.csv"' % (s.title, profile)
-	response.mimetype = 'text/comma-separated-values'
-	return response
-
 @app.route("/stig/<stigid>/")
 def getStigOverview(stigid):
 	s = STIG.query.filter_by(pkid=stigid).first()
@@ -77,8 +66,30 @@ def getStigOverview(stigid):
 @app.route("/stig/<stigid>/<profile>/")
 def getStig(stigid, profile):
 	s = STIG.query.filter_by(pkid=stigid).first()
+	checkprofiles = getChecksByProfile(s, profile)
+		# Some checks had no <description tag> - Patched for now, fix in import!
+	for key in checkprofiles.keys():
+		for check in checkprofiles[key]:
+			if check.description == None:
+				check.description = ""
+	return render_template('stigprofiledetail.html', checks=checkprofiles, stig=s, profile=profile)
+
+@app.route("/stig/<stigid>/<profile>/excel")
+def getStigExcel(stigid, profile):
+	#s = session.query(STIG).filter_by(pkid=stigid).first()
+	s = STIG.query.filter_by(pkid=stigid).first()
 	checks = getChecksByProfile(s, profile)
-	return render_template('stigprofiledetail.html', checks=checks, stig=s, profile=profile)
+		# Some checks had no <description tag> - Patched for now, fix in import!
+	checkprofiles = getChecksByProfile(s, profile)
+	for key in checkprofiles.keys():
+		for check in checkprofiles[key]:
+			if check.description == None:
+				check.description = ""
+	response = make_response(render_template('stigprofiledetail.csv', checks=checkprofiles, stig=s))
+	response.headers['Content-Disposition'] = 'attachment; filename="%s - %s.csv"' % (s.title, profile)
+	response.headers['Content-Type'] = 'text/csv; name="%s - %s.csv"' % (s.title, profile)
+	response.mimetype = 'text/comma-separated-values'
+	return response
 
 @app.route("/check/<checkid>")
 def getCheck(checkid):
@@ -103,6 +114,7 @@ def search():
 def email():
 	print request.form['email']
 	return redirect(url_for('default'))
+
 if __name__ == '__main__':
 	app.debug = True
 	app.run(host='0.0.0.0')
