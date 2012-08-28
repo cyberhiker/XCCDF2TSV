@@ -11,6 +11,9 @@ def searchSTIGNames(query):
 def searchSTIGDescriptions(query):
 	return STIG.query.filter(STIG.description.ilike(query)).all()
 
+def searchFindingFindingID(query):
+	return Finding.query.filter(Finding.findingid.ilike(query)).all()
+
 def searchFindingName(query):
 	return Finding.query.filter(Finding.title.ilike(query)).all()
 
@@ -47,6 +50,7 @@ def getSearchResults(query):
 	results['stigs'] = results['stigs'] + searchSTIGDescriptions(sql_query)
 
 	results['findings'] = searchFindingRuleID(sql_query)
+	results['findings'] = results['findings'] + searchFindingFindingID(sql_query)
 	results['findings'] = results['findings'] + searchFindingName(sql_query)
 	results['findings'] = results['findings'] + searchFindingVersion(sql_query)
 	results['findings'] = results['findings'] + searchFindingIAControls(sql_query)
