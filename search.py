@@ -42,7 +42,7 @@ def searchFindingFixID(query):
 	return Finding.query.filter(Finding.fixid.ilike(query)).all()
 
 def getSearchResults(query):
-	query = query.replace("%", "")
+	query = query.replace("%", "").strip()
 	results = {'findings':[], 'stigs':[]}
 	sql_query = '%%%s%%' % query # So it can be used in 'like' searchs properly
 

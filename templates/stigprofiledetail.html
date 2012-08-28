@@ -109,7 +109,7 @@
         </thead>
         <tbody>
           {% for _check in checks['high']|sort(attribute='findingid') %}
-             <tr><td><a href="{{ url_for('getCheck', checkid=_check.findingid) }}"> {{ _check.findingid }}</a></td><td class="alert-danger">{{ _check.severity }}</td><td>{{ _check.title }}</td><td>{{ _check.description|truncate() }}</td></tr>
+             <tr><td><a href="{{ url_for('getCheck', checkid=_check.findingid) }}"> {{ _check.findingid }}</a></td><td class="alert-danger high-severity">{{ _check.severity }}</td><td>{{ _check.title }}</td><td>{{ _check.description|truncate() }}</td></tr>
           {% endfor %}
           {% for _check in checks['medium']|sort(attribute='findingid') %}
              <tr><td><a href="{{ url_for('getCheck', checkid=_check.findingid) }}"> {{ _check.findingid }}</a></td><td class="alert">{{ _check.severity }}</td><td>{{ _check.title }}</td><td>{{ _check.description|truncate() }}</td></tr>
