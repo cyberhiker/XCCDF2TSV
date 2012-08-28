@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block pagetitle %}About STIG Viewer{% endblock pagetitle %}
+{% block headerbar %}
+              <li><a href="/">Home</a></li>
+              <li><a href="{{ url_for('stigs') }}">STIGs</a></li>
+              <li><a href="{{ url_for('checks') }}">Checks</a></li>
+              <li class="active"><a href="{{ url_for('about') }}">About</a></li>
+{% endblock headerbar %}
+{% block body %}
+<div class="hero-unit">
+	<h1>About STIG Viewer</h1>
+</div>
+<h2>About The Project</h2>
+<p>STIG Viewer started as a weekend project, and hopes to rapidly grow into a highly useful tool for system administrators, network administrators, software developers, information security/assurance professionals, and anyone else who has to suffer through the seemingly endless pain of using the official DISA STIG documents.</p>
+
+
+<h2>About the Content</h2>
+<p>All of the content, with the exception of the user submitted comments, is public domain information, as it was published by the United States Government (specifically the Defense Information Systems Agency), and is  downloaded from <a href="http://iase.disa.mil">IASE</a> on a (currently) quarterly basis.</p>
+
+
+
+{% endblock body %}

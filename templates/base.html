@@ -60,6 +60,7 @@
               <li class="active"><a href="/">Home</a></li>
               <li><a href="{{ url_for('stigs') }}">STIGs</a></li>
               <li><a href="{{ url_for('checks') }}">Checks</a></li>
+              <li><a href="{{ url_for('about') }}">About</a></li>
               {% endblock headerbar %}
             </ul>
           <form class="navbar-search pull-right" action="{{ url_for('search') }}" method="GET">
