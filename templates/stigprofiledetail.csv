@@ -1,10 +1,10 @@
 "Finding ID","Severity","Title","Description","Status","Details/Notes/Justification"
 {% for check in checks['high'] %}
-"{{ check.findingid }}","CAT I","{{ check.title }}","{{ check.description|replace("\n",'') }}"
+"{{ check.findingid }}","CAT I","{{ check.title }}","{{ check.description }}"
 {%- endfor -%}
 {%- for check in checks['medium'] %}
-"{{ check.findingid }}","CAT II","{{ check.title }}","{{ check.description|replace("\n",'') }}"
+"{{ check.findingid }}","CAT II","{{ check.title }}","{{ check.description }}"
 {%- endfor -%}
 {%- for check in checks['low'] %}
-"{{ check.findingid }}","CAT III","{{ check.title }}","{{ check.description|replace("\n",'') }}"
+"{{ check.findingid }}","CAT III","{{ check.title }}","{{ check.description }}"
 {%- endfor -%}

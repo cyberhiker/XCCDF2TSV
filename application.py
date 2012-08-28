@@ -85,6 +85,9 @@ def getStigExcel(stigid, profile):
 		for check in checkprofiles[key]:
 			if check.description == None:
 				check.description = ""
+			
+			check.description = check.description.replace('"', '""').replace("\n","")
+			check.title = check.title.replace("\n","")
 	response = make_response(render_template('stigprofiledetail.csv', checks=checkprofiles, stig=s))
 	response.headers['Content-Disposition'] = 'attachment; filename="%s - %s.csv"' % (s.title, profile)
 	response.headers['Content-Type'] = 'text/csv; name="%s - %s.csv"' % (s.title, profile)
