@@ -39,7 +39,7 @@ for profile in profiles:
 					
 groups = benchmark.findall("{%s}Group" % xmlns)
 
-print "ID\tVersion\tRule Title\tTitle\tSeverity\tIA Controls"
+print "ID\tVersion\tRule Title\tTitle\tDiscussion\tSeverity\tIA Controls"
 for group in groups:
 	group_id = group.get("id")
 	if group_id in check_list:
@@ -53,4 +53,5 @@ for group in groups:
 		innerXML = "<desc>%s</desc>" % format(encodedDesc)
 		xml = ET.XML(innerXML)
 		iacontrols = xml.find("IAControls").text
-		print "%s\t%s\t%s\t%s\t%s\t%s\t" % (group_id.replace('\n', '##').replace('V-',''), version.replace('\n', '##'), rule_title.replace('\n', '##'), title.replace('\n', '##'), severity.replace('\n', '##'), iacontrols.replace('\n', '##'))
+		description = xml.find("VulnDiscussion").text
+		print "%s\t%s\t%s\t%s\t%s\t%s\t%s\t" % (group_id.replace('\n', '##').replace('V-',''), version.replace('\n', '##'), rule_title.replace('\n', '##'), title.replace('\n', '##'), description.replace('\n', '##'), severity.replace('\n', '##'), iacontrols.replace('\n', '##'))
